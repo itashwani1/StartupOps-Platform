@@ -2,13 +2,15 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const path = require('path');
+
+dotenv.config({ path: path.join(__dirname, '.env') });
+
 const authRoutes = require('./routes/authRoutes');
 const startupRoutes = require('./routes/startupRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 // const feedbackRoutes = require('./routes/feedbackRoutes'); // We will require inline or uncomment this if used
 const analyticsRoutes = require('./routes/analyticsRoutes');
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
