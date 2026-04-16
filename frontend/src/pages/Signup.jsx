@@ -15,7 +15,8 @@ const Signup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const userData = await signup(name, email, password, role, username);
+        const trimmedUsername = username.trim().replace(/^@/, '');
+        const userData = await signup(name, email, password, role, trimmedUsername);
         if (userData) {
             // Role-based redirect
             switch (userData.role) {
