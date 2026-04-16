@@ -1,11 +1,13 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Building2, CheckSquare, MessageSquare, BarChart3, LogOut, Sparkles, X, CreditCard, Wallet } from 'lucide-react';
+import { LayoutDashboard, Building2, CheckSquare, MessageSquare, BarChart3, LogOut, Sparkles, X, CreditCard, Wallet, Search, Briefcase, Heart, Settings, PieChart } from 'lucide-react';
 import { clsx } from 'clsx';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 const Sidebar = ({ isMobileOpen, onMobileClose }) => {
     const { user, logout } = useAuth();
+    const { theme } = useTheme();
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -13,6 +15,8 @@ const Sidebar = ({ isMobileOpen, onMobileClose }) => {
         navigate('/login');
         onMobileClose?.();
     };
+
+    const isDarkMode = theme === 'dark';
 
     const allNavItems = [
         // Founder & Team Items
@@ -27,6 +31,12 @@ const Sidebar = ({ isMobileOpen, onMobileClose }) => {
 
         // Investor Items
         { name: 'Dashboard', path: '/investor/dashboard', icon: LayoutDashboard, roles: ['Investor'] },
+        { name: 'Discover Startups', path: '/investor/discover', icon: Search, roles: ['Investor'] },
+        { name: 'My Investments', path: '/investor/investments', icon: Briefcase, roles: ['Investor'] },
+        { name: 'Watchlist', path: '/investor/watchlist', icon: Heart, roles: ['Investor'] },
+        { name: 'Messages', path: '/investor/messages', icon: MessageSquare, roles: ['Investor'] },
+        { name: 'Analytics', path: '/investor/analytics', icon: PieChart, roles: ['Investor'] },
+        { name: 'Settings', path: '/investor/settings', icon: Settings, roles: ['Investor'] },
 
         // Mentor Items
         { name: 'Dashboard', path: '/mentor/dashboard', icon: LayoutDashboard, roles: ['Mentor'] },
@@ -38,13 +48,19 @@ const Sidebar = ({ isMobileOpen, onMobileClose }) => {
     return (
         <>
             {/* Desktop Sidebar */}
-            <aside className="w-64 bg-white border-r border-slate-200 hidden md:flex flex-col h-full">
+            <aside className={clsx(
+                "w-64 border-r hidden md:flex flex-col h-full transition-colors duration-300",
+                isDarkMode ? "bg-slate-900 border-slate-800 text-slate-300" : "bg-white border-slate-200 text-slate-600"
+            )}>
                 <div className="p-6">
                     <div className="flex items-center space-x-2">
                         <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                             <span className="text-white font-bold text-xl">S</span>
                         </div>
-                        <span className="text-xl font-bold text-slate-900">StartupOps</span>
+                        <span className={clsx(
+                            "text-xl font-bold",
+                            isDarkMode ? "text-white" : "text-slate-900"
+                        )}>StartupOps</span>
                     </div>
                 </div>
 
@@ -55,10 +71,10 @@ const Sidebar = ({ isMobileOpen, onMobileClose }) => {
                             to={item.path}
                             className={({ isActive }) =>
                                 clsx(
-                                    'flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors',
+                                    'flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200',
                                     isActive
-                                        ? 'bg-blue-50 text-blue-700'
-                                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                        ? (isDarkMode ? 'bg-blue-600/10 text-blue-400' : 'bg-blue-50 text-blue-700')
+                                        : (isDarkMode ? 'text-slate-400 hover:bg-slate-800 hover:text-white' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900')
                                 )
                             }
                         >
@@ -68,10 +84,16 @@ const Sidebar = ({ isMobileOpen, onMobileClose }) => {
                     ))}
                 </nav>
 
-                <div className="p-4 border-t border-slate-200">
+                <div className={clsx(
+                    "p-4 border-t",
+                    isDarkMode ? "border-slate-800" : "border-slate-200"
+                )}>
                     <button
                         onClick={handleLogout}
-                        className="flex items-center w-full px-4 py-3 text-sm font-medium text-slate-600 rounded-lg hover:bg-red-50 hover:text-red-700 transition-colors"
+                        className={clsx(
+                            "flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg transition-colors",
+                            isDarkMode ? "text-slate-400 hover:bg-red-900/20 hover:text-red-400" : "text-slate-600 hover:bg-red-50 hover:text-red-700"
+                        )}
                     >
                         <LogOut className="w-5 h-5 mr-3" />
                         Sign Out
@@ -81,7 +103,8 @@ const Sidebar = ({ isMobileOpen, onMobileClose }) => {
 
             {/* Mobile Sidebar */}
             <aside className={clsx(
-                "fixed top-0 left-0 z-50 w-64 h-full bg-white border-r border-slate-200 transform transition-transform duration-300 ease-in-out md:hidden flex flex-col",
+                "fixed top-0 left-0 z-50 w-64 h-full border-r transform transition-transform duration-300 ease-in-out md:hidden flex flex-col",
+                isDarkMode ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200",
                 isMobileOpen ? "translate-x-0" : "-translate-x-full"
             )}>
                 <div className="p-6 flex items-center justify-between">
@@ -89,13 +112,19 @@ const Sidebar = ({ isMobileOpen, onMobileClose }) => {
                         <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                             <span className="text-white font-bold text-xl">S</span>
                         </div>
-                        <span className="text-xl font-bold text-slate-900">StartupOps</span>
+                        <span className={clsx(
+                            "text-xl font-bold",
+                            isDarkMode ? "text-white" : "text-slate-900"
+                        )}>StartupOps</span>
                     </div>
                     <button
                         onClick={onMobileClose}
-                        className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                        className={clsx(
+                            "p-2 rounded-lg transition-colors",
+                            isDarkMode ? "hover:bg-slate-800 text-slate-400" : "hover:bg-slate-100 text-slate-600"
+                        )}
                     >
-                        <X className="w-5 h-5 text-slate-600" />
+                        <X className="w-5 h-5" />
                     </button>
                 </div>
 
@@ -107,10 +136,10 @@ const Sidebar = ({ isMobileOpen, onMobileClose }) => {
                             onClick={onMobileClose}
                             className={({ isActive }) =>
                                 clsx(
-                                    'flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors',
+                                    'flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200',
                                     isActive
-                                        ? 'bg-blue-50 text-blue-700'
-                                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                        ? (isDarkMode ? 'bg-blue-600/10 text-blue-400' : 'bg-blue-50 text-blue-700')
+                                        : (isDarkMode ? 'text-slate-400 hover:bg-slate-800 hover:text-white' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900')
                                 )
                             }
                         >
@@ -120,10 +149,16 @@ const Sidebar = ({ isMobileOpen, onMobileClose }) => {
                     ))}
                 </nav>
 
-                <div className="p-4 border-t border-slate-200">
+                <div className={clsx(
+                    "p-4 border-t",
+                    isDarkMode ? "border-slate-800" : "border-slate-200"
+                )}>
                     <button
                         onClick={handleLogout}
-                        className="flex items-center w-full px-4 py-3 text-sm font-medium text-slate-600 rounded-lg hover:bg-red-50 hover:text-red-700 transition-colors"
+                        className={clsx(
+                            "flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg transition-colors",
+                            isDarkMode ? "text-slate-400 hover:bg-red-900/20 hover:text-red-400" : "text-slate-600 hover:bg-red-50 hover:text-red-700"
+                        )}
                     >
                         <LogOut className="w-5 h-5 mr-3" />
                         Sign Out

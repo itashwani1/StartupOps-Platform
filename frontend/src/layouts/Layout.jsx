@@ -3,13 +3,24 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
+import { clsx } from 'clsx';
+
+import { useTheme } from '../context/ThemeContext';
 
 const Layout = () => {
     const location = useLocation();
+    const { user } = useAuth();
+    const { theme } = useTheme();
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
+    const isDarkMode = theme === 'dark';
+
     return (
-        <div className="flex h-screen bg-slate-50">
+        <div className={clsx(
+            "flex h-screen transition-colors duration-300",
+            isDarkMode ? "bg-slate-950 text-white" : "bg-slate-50 text-slate-900"
+        )}>
             {/* Mobile overlay */}
             {isMobileSidebarOpen && (
                 <div
@@ -26,7 +37,10 @@ const Layout = () => {
             <div className="flex-1 flex flex-col overflow-hidden">
                 <Topbar onMobileMenuClick={() => setIsMobileSidebarOpen(true)} />
 
-                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50 p-4 sm:p-6">
+                <main className={clsx(
+                    "flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-6",
+                    isDarkMode ? "bg-slate-950" : "bg-slate-50"
+                )}>
                     <div className="max-w-7xl mx-auto">
                         <AnimatePresence mode="wait">
                             <motion.div

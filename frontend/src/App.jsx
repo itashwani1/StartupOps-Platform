@@ -19,6 +19,7 @@ import ResourceManagement from './pages/ResourceManagement';
 
 
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { Toaster } from 'react-hot-toast';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -42,86 +43,90 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <Toaster position="top-center" />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/submit-feedback" element={<PublicFeedback />} />
+        <ThemeProvider>
+          <Toaster position="top-center" />
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/submit-feedback" element={<PublicFeedback />} />
 
-          {/* Investor Routes */}
-          <Route path="/investor" element={<Layout />}>
-            <Route index element={<Navigate to="/investor/dashboard" replace />} />
-            <Route path="dashboard" element={
-              <ProtectedRoute allowedRoles={['Investor']}>
-                <InvestorDashboard />
-              </ProtectedRoute>
-            } />
-          </Route>
+            {/* Investor Routes */}
+            <Route path="/investor" element={<Layout />}>
+              <Route index element={<Navigate to="/investor/dashboard" replace />} />
+              <Route path="dashboard" element={<InvestorDashboard />} />
+              <Route path="discover" element={<InvestorDashboard />} />
+              <Route path="investments" element={<InvestorDashboard />} />
+              <Route path="watchlist" element={<InvestorDashboard />} />
+              <Route path="messages" element={<InvestorDashboard />} />
+              <Route path="analytics" element={<InvestorDashboard />} />
+              <Route path="settings" element={<InvestorDashboard />} />
+            </Route>
 
-          {/* Mentor Routes */}
-          <Route path="/mentor" element={<Layout />}>
-            <Route index element={<Navigate to="/mentor/dashboard" replace />} />
-            <Route path="dashboard" element={
-              <ProtectedRoute allowedRoles={['Mentor']}>
-                <MentorDashboard />
-              </ProtectedRoute>
-            } />
-          </Route>
+            {/* Mentor Routes */}
+            <Route path="/mentor" element={<Layout />}>
+              <Route index element={<Navigate to="/mentor/dashboard" replace />} />
+              <Route path="dashboard" element={
+                <ProtectedRoute allowedRoles={['Mentor']}>
+                  <MentorDashboard />
+                </ProtectedRoute>
+              } />
+            </Route>
 
-          {/* Founder/Team Routes */}
-          <Route path="/app" element={<Layout />}>
-            <Route index element={<Navigate to="/app/dashboard" replace />} />
-            <Route path="dashboard" element={
-              <ProtectedRoute allowedRoles={['Founder', 'Team']}>
-                <Dashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="profile" element={
-              <ProtectedRoute allowedRoles={['Founder']}>
-                <StartupProfile />
-              </ProtectedRoute>
-            } />
-            <Route path="tasks" element={
-              <ProtectedRoute allowedRoles={['Founder', 'Team']}>
-                <Tasks />
-              </ProtectedRoute>
-            } />
-            <Route path="feedback" element={
-              <ProtectedRoute allowedRoles={['Founder', 'Team']}>
-                <Feedback />
-              </ProtectedRoute>
-            } />
-            <Route path="analytics" element={
-              <ProtectedRoute allowedRoles={['Founder']}>
-                <Analytics />
-              </ProtectedRoute>
-            } />
-            <Route path="pitch" element={
-              <ProtectedRoute allowedRoles={['Founder']}>
-                <PitchGenerator />
-              </ProtectedRoute>
-            } />
-            <Route path="subscription" element={
-              <ProtectedRoute allowedRoles={['Founder']}>
-                <PricingPage />
-              </ProtectedRoute>
-            } />
-            <Route path="payment" element={
-              <ProtectedRoute allowedRoles={['Founder']}>
-                <PaymentPage />
-              </ProtectedRoute>
-            } />
-            <Route path="resources" element={
-              <ProtectedRoute allowedRoles={['Founder']}>
-                <ResourceManagement />
-              </ProtectedRoute>
-            } />
-          </Route>
+            {/* Founder/Team Routes */}
+            <Route path="/app" element={<Layout />}>
+              <Route index element={<Navigate to="/app/dashboard" replace />} />
+              <Route path="dashboard" element={
+                <ProtectedRoute allowedRoles={['Founder', 'Team']}>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="profile" element={
+                <ProtectedRoute allowedRoles={['Founder']}>
+                  <StartupProfile />
+                </ProtectedRoute>
+              } />
+              <Route path="tasks" element={
+                <ProtectedRoute allowedRoles={['Founder', 'Team']}>
+                  <Tasks />
+                </ProtectedRoute>
+              } />
+              <Route path="feedback" element={
+                <ProtectedRoute allowedRoles={['Founder', 'Team']}>
+                  <Feedback />
+                </ProtectedRoute>
+              } />
+              <Route path="analytics" element={
+                <ProtectedRoute allowedRoles={['Founder']}>
+                  <Analytics />
+                </ProtectedRoute>
+              } />
+              <Route path="pitch" element={
+                <ProtectedRoute allowedRoles={['Founder']}>
+                  <PitchGenerator />
+                </ProtectedRoute>
+              } />
+              <Route path="subscription" element={
+                <ProtectedRoute allowedRoles={['Founder']}>
+                  <PricingPage />
+                </ProtectedRoute>
+              } />
+              <Route path="payment" element={
+                <ProtectedRoute allowedRoles={['Founder']}>
+                  <PaymentPage />
+                </ProtectedRoute>
+              } />
+              <Route path="resources" element={
+                <ProtectedRoute allowedRoles={['Founder']}>
+                  <ResourceManagement />
+                </ProtectedRoute>
+              } />
+            </Route>
 
-          {/* Redirect old routes or unknown routes */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+            {/* Redirect old routes or unknown routes */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </ThemeProvider>
       </AuthProvider>
     </Router>
   );
