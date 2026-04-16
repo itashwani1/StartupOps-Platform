@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { Building2, Users, Edit2, Save, Plus, Link, Copy, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -7,6 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
 const StartupProfile = () => {
+    const navigate = useNavigate();
     const { user, updateUser } = useAuth();
     const [startup, setStartup] = useState(null);
     const [team, setTeam] = useState([]);
@@ -81,7 +83,7 @@ const StartupProfile = () => {
 
     const handleAddMember = async (newMember) => {
         try {
-            const { data } = await api.post(`/startups/${startup._id}/members`, { email: newMember.email });
+            const { data } = await api.post(`/startups/${startup._id}/members`, newMember);
             // setTeam(data.team); // Removed to prevent potential crash with unpopulated data
             // Fetch updated details to get populated team data
             fetchStartupDetails();
@@ -360,15 +362,19 @@ const StartupProfile = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {team.length > 0 ? (
                         team.map((member) => (
-                            <div key={member._id} className="flex items-center p-4 border border-slate-100 rounded-lg hover:border-blue-200 transition bg-slate-50">
-                                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold mr-3">
+                            <div 
+                                key={member._id} 
+                                onClick={() => navigate(`/app/team/${member._id}`)}
+                                className="flex items-center p-4 border border-slate-100 rounded-lg hover:border-blue-200 transition bg-slate-50 cursor-pointer hover:shadow-md group"
+                            >
+                                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold mr-3 group-hover:scale-110 transition-transform">
                                     {getInitials(member.name)}
                                 </div>
                                 <div>
-                                    <p className="text-sm font-medium text-slate-900">{member.name}</p>
-                                    <p className="text-xs text-slate-500">
+                                    <p className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors uppercase tracking-tight">{member.name}</p>
+                                    <p className="text-xs text-slate-500 font-medium">
                                         {member.role}
-                                        {member.username && <span className="ml-1 text-slate-400">(@{member.username})</span>}
+                                        {(member.memberId || member.username) && <span className="ml-1 text-slate-400">({member.memberId || member.username})</span>}
                                     </p>
                                 </div>
                             </div>

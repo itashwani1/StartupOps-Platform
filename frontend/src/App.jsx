@@ -16,6 +16,7 @@ import MentorDashboard from './pages/MentorDashboard';
 import PricingPage from './pages/PricingPage';
 import PaymentPage from './pages/PaymentPage';
 import ResourceManagement from './pages/ResourceManagement';
+import TeamMemberDetail from './pages/TeamMemberDetail';
 
 
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -112,9 +113,15 @@ function App() {
                 <PaymentPage />
               </ProtectedRoute>
             } />
+            } />
             <Route path="resources" element={
               <ProtectedRoute allowedRoles={['Founder']}>
                 <ResourceManagement />
+              </ProtectedRoute>
+            } />
+            <Route path="team/:id" element={
+              <ProtectedRoute allowedRoles={['Founder']}>
+                <TeamMemberDetail />
               </ProtectedRoute>
             } />
           </Route>

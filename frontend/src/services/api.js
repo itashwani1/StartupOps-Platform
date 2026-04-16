@@ -9,9 +9,12 @@ api.interceptors.request.use(
     (config) => {
         const userInfo = localStorage.getItem('userInfo');
         if (userInfo) {
-            const { token } = JSON.parse(userInfo);
+            const { token, role } = JSON.parse(userInfo);
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;
+            }
+            if (role) {
+                config.headers['x-user-role'] = role;
             }
         }
         return config;

@@ -143,6 +143,7 @@ exports.addTeamMember = async (req, res) => {
                 name,
                 email,
                 username: memberId || username || email.split('@')[0],
+                memberId: memberId,
                 password: 'password123', // Default password
                 role: role || 'Team',
                 department,
@@ -162,6 +163,7 @@ exports.addTeamMember = async (req, res) => {
             // Update existing user details
             user.name = name || user.name;
             user.username = memberId || username || user.username;
+            user.memberId = memberId || user.memberId;
             user.role = role || user.role;
             user.department = department || user.department;
             user.accessLevel = accessLevel || user.accessLevel;
