@@ -112,35 +112,77 @@ exports.updateStartup = async (req, res) => {
 // @route   POST /api/startups/:id/members
 // @access  Private (Founder only)
 exports.addTeamMember = async (req, res) => {
-    const { email } = req.body;
+    const { 
+        name, 
+        email, 
+        memberId,
+        username, 
+        role, 
+        department, 
+        accessLevel, 
+        phoneNumber, 
+        joiningDate, 
+        avatar, 
+        status 
+    } = req.body;
 
     try {
         const startup = await Startup.findById(req.params.id);
-        const user = await User.findOne({ email });
-
         if (!startup) return res.status(404).json({ message: 'Startup not found' });
-        if (!user) return res.status(404).json({ message: 'User not found' });
-
-        // Check if user is already in a startup
-        if (user.startup) return res.status(400).json({ message: 'User already belongs to a startup' });
 
         if (startup.founder.toString() !== req.user._id.toString()) {
             return res.status(403).json({ message: 'Not authorized to add members' });
         }
 
-        // Add to startup team array
-        startup.team.push(user._id);
-        await startup.save();
+        let user = await User.findOne({ email });
 
-        // Link startup to user
-        await User.findByIdAndUpdate(user._id, {
-            startup: startup._id,
-            role: 'Team'
-        });
+        if (!user) {
+            // Create new user if not found
+            // Using a default password since it's not provided in the UI list
+            user = await User.create({
+                name,
+                email,
+                username: memberId || username || email.split('@')[0],
+                password: 'password123', // Default password
+                role: role || 'Team',
+                department,
+                accessLevel,
+                phoneNumber,
+                joiningDate: joiningDate || Date.now(),
+                avatar,
+                status: status || 'Active',
+                startup: startup._id
+            });
+        } else {
+            // Check if user is already in a startup
+            if (user.startup && user.startup.toString() !== startup._id.toString()) {
+                return res.status(400).json({ message: 'User already belongs to another startup' });
+            }
 
-        res.json({ message: 'Team member added', team: startup.team });
+            // Update existing user details
+            user.name = name || user.name;
+            user.username = memberId || username || user.username;
+            user.role = role || user.role;
+            user.department = department || user.department;
+            user.accessLevel = accessLevel || user.accessLevel;
+            user.phoneNumber = phoneNumber || user.phoneNumber;
+            user.joiningDate = joiningDate || user.joiningDate;
+            user.avatar = avatar || user.avatar;
+            user.status = status || user.status;
+            user.startup = startup._id;
+            await user.save();
+        }
+
+        // Add to startup team array if not already there
+        if (!startup.team.includes(user._id)) {
+            startup.team.push(user._id);
+            await startup.save();
+        }
+
+        res.json({ message: 'Team member added successfully', team: startup.team });
 
     } catch (error) {
+        console.error('Error adding team member:', error);
         res.status(500).json({ message: error.message });
     }
 };

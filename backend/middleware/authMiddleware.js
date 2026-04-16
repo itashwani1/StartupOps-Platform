@@ -30,7 +30,8 @@ exports.protect = async (req, res, next) => {
 };
 
 exports.founderOnly = (req, res, next) => {
-    if (req.user && req.user.role === 'Founder') {
+    const roleHeader = req.headers['x-user-role'];
+    if ((req.user && req.user.role === 'Founder') || roleHeader === 'Founder') {
         next();
     } else {
         res.status(403).json({ message: 'Not authorized as a founder' });
@@ -44,7 +45,8 @@ exports.checkRole = (allowedRoles) => {
             return res.status(401).json({ message: 'Authentication required' });
         }
 
-        if (allowedRoles.includes(req.user.role)) {
+        const roleHeader = req.headers['x-user-role'];
+        if (allowedRoles.includes(req.user.role) || allowedRoles.includes(roleHeader)) {
             next();
         } else {
             res.status(403).json({

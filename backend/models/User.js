@@ -16,6 +16,9 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    memberId: {
+        type: String,
+    },
     password: {
         type: String,
         required: true,
@@ -24,6 +27,28 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['Founder', 'Team', 'Investor', 'Mentor'],
         default: 'Founder',
+    },
+    department: {
+        type: String,
+    },
+    accessLevel: {
+        type: String,
+        default: 'Standard',
+    },
+    phoneNumber: {
+        type: String,
+    },
+    joiningDate: {
+        type: Date,
+        default: Date.now,
+    },
+    avatar: {
+        type: String,
+    },
+    status: {
+        type: String,
+        enum: ['Active', 'On Leave', 'Inactive'],
+        default: 'Active',
     },
     startup: {
         type: mongoose.Schema.Types.ObjectId,
