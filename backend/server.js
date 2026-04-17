@@ -14,6 +14,7 @@ const analyticsRoutes = require('./routes/analyticsRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+mongoose.set("bufferCommands", false);
 
 // Middleware
 app.use(express.json());
