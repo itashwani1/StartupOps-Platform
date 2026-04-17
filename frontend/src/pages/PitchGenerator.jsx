@@ -24,10 +24,13 @@ const PitchGenerator = () => {
             const { data } = await axios.get('/api/pitch', {
                 headers: { Authorization: `Bearer ${user.token}` }
             });
-            setPitch(data);
+            if (data) {
+                setPitch(data);
+            } else {
+                console.log('No saved pitch found');
+            }
         } catch (error) {
-            // No saved pitch yet
-            console.log('No saved pitch found');
+            console.log('Error fetching pitch', error);
         }
     };
 
