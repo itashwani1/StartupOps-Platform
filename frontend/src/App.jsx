@@ -17,6 +17,7 @@ import PricingPage from './pages/PricingPage';
 import PaymentPage from './pages/PaymentPage';
 import ResourceManagement from './pages/ResourceManagement';
 import TeamMemberDetail from './pages/TeamMemberDetail';
+import Connections from './pages/Connections';
 
 
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -58,6 +59,41 @@ function App() {
                 <InvestorDashboard />
               </ProtectedRoute>
             } />
+            <Route path="opportunities" element={
+              <ProtectedRoute allowedRoles={['Investor']}>
+                <InvestorDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="investments" element={
+              <ProtectedRoute allowedRoles={['Investor']}>
+                <InvestorDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="wallet" element={
+              <ProtectedRoute allowedRoles={['Investor']}>
+                <InvestorDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="loans" element={
+              <ProtectedRoute allowedRoles={['Investor']}>
+                <InvestorDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="transactions" element={
+              <ProtectedRoute allowedRoles={['Investor']}>
+                <InvestorDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="reports" element={
+              <ProtectedRoute allowedRoles={['Investor']}>
+                <InvestorDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="settings" element={
+              <ProtectedRoute allowedRoles={['Investor']}>
+                <InvestorDashboard />
+              </ProtectedRoute>
+            } />
           </Route>
 
           {/* Mentor Routes */}
@@ -81,6 +117,11 @@ function App() {
             <Route path="profile" element={
               <ProtectedRoute allowedRoles={['Founder']}>
                 <StartupProfile />
+              </ProtectedRoute>
+            } />
+            <Route path="connections" element={
+              <ProtectedRoute allowedRoles={['Founder']}>
+                <Connections />
               </ProtectedRoute>
             } />
             <Route path="tasks" element={
@@ -113,7 +154,7 @@ function App() {
                 <PaymentPage />
               </ProtectedRoute>
             } />
-            } />
+    
             <Route path="resources" element={
               <ProtectedRoute allowedRoles={['Founder']}>
                 <ResourceManagement />

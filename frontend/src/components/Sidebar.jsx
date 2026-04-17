@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Building2, CheckSquare, MessageSquare, BarChart3, LogOut, Sparkles, X, CreditCard, Wallet } from 'lucide-react';
+import { LayoutDashboard, Building2, CheckSquare, MessageSquare, BarChart3, LogOut, Sparkles, X, CreditCard, Wallet, Search, Briefcase, Banknote, Repeat, FileText, Settings, Users } from 'lucide-react';
 import { clsx } from 'clsx';
 import { useAuth } from '../context/AuthContext';
 
@@ -18,6 +18,7 @@ const Sidebar = ({ isMobileOpen, onMobileClose }) => {
         // Founder & Team Items
         { name: 'Dashboard', path: '/app/dashboard', icon: LayoutDashboard, roles: ['Founder', 'Team'] },
         { name: 'Startup Profile', path: '/app/profile', icon: Building2, roles: ['Founder'] },
+        { name: 'Connections', path: '/app/connections', icon: Users, roles: ['Founder'] },
         { name: 'Tasks & Milestones', path: '/app/tasks', icon: CheckSquare, roles: ['Founder', 'Team'] },
         { name: 'Feedback', path: '/app/feedback', icon: MessageSquare, roles: ['Founder', 'Team'] },
         { name: 'Analytics', path: '/app/analytics', icon: BarChart3, roles: ['Founder'] },
@@ -27,6 +28,13 @@ const Sidebar = ({ isMobileOpen, onMobileClose }) => {
 
         // Investor Items
         { name: 'Dashboard', path: '/investor/dashboard', icon: LayoutDashboard, roles: ['Investor'] },
+        { name: 'Opportunities', path: '/investor/opportunities', icon: Search, roles: ['Investor'] },
+        { name: 'My Investments', path: '/investor/investments', icon: Briefcase, roles: ['Investor'] },
+        { name: 'Wallet', path: '/investor/wallet', icon: Wallet, roles: ['Investor'] },
+        { name: 'Loans', path: '/investor/loans', icon: Banknote, roles: ['Investor'] },
+        { name: 'Transactions', path: '/investor/transactions', icon: Repeat, roles: ['Investor'] },
+        { name: 'Reports', path: '/investor/reports', icon: FileText, roles: ['Investor'] },
+        { name: 'Settings', path: '/investor/settings', icon: Settings, roles: ['Investor'] },
 
         // Mentor Items
         { name: 'Dashboard', path: '/mentor/dashboard', icon: LayoutDashboard, roles: ['Mentor'] },

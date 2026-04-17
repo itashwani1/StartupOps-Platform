@@ -31,6 +31,19 @@ const startupSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     }],
+    visibility: {
+        type: String,
+        enum: ['Private', 'Public'],
+        default: 'Public'
+    },
+    investmentAmount: {
+        type: Number,
+        default: 0
+    },
+    valuation: {
+        type: Number,
+        default: 0
+    },
     subscription: {
         plan: {
             type: String,
