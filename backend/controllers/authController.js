@@ -45,6 +45,46 @@ exports.registerUser = async (req, res) => {
     }
 };
 
+// @desc    Update user
+// @route   PUT /api/auth/user/:id
+// @access  Private (Admin/Founder only)
+exports.updateUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+
+        if (user) {
+            user.name = req.body.name || user.name;
+            user.email = req.body.email || user.email;
+            user.role = req.body.role || user.role;
+            user.department = req.body.department || user.department;
+            user.phoneNumber = req.body.phoneNumber || user.phoneNumber;
+            user.accessLevel = req.body.accessLevel || user.accessLevel;
+            user.status = req.body.status || user.status;
+
+            if (req.body.password) {
+                user.password = req.body.password;
+            }
+
+            const updatedUser = await user.save();
+
+            res.json({
+                _id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                role: updatedUser.role,
+                department: updatedUser.department,
+                phoneNumber: updatedUser.phoneNumber,
+                accessLevel: updatedUser.accessLevel,
+                status: updatedUser.status,
+            });
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 // @desc    Auth user & get token
 // @route   POST /api/auth/login
 // @access  Public

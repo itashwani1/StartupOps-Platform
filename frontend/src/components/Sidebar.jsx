@@ -18,7 +18,6 @@ const Sidebar = ({ isMobileOpen, onMobileClose }) => {
         // Founder & Team Items
         { name: 'Dashboard', path: '/app/dashboard', icon: LayoutDashboard, roles: ['Founder', 'Team'] },
         { name: 'Startup Profile', path: '/app/profile', icon: Building2, roles: ['Founder'] },
-        { name: 'Connections', path: '/app/connections', icon: Users, roles: ['Founder'] },
         { name: 'Tasks & Milestones', path: '/app/tasks', icon: CheckSquare, roles: ['Founder', 'Team'] },
         { name: 'Feedback', path: '/app/feedback', icon: MessageSquare, roles: ['Founder', 'Team'] },
         { name: 'Analytics', path: '/app/analytics', icon: BarChart3, roles: ['Founder'] },
